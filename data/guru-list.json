@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "name": "Liao Fan Hawker Chan",
+    "type": "Stars",
+    "lat": 1.2825,
+    "lng": 103.843,
+    "specialty": "Soya Sauce Chicken Rice",
+    "description": "World's cheapest Michelin-starred meal."
+  },
+  {
+    "id": 2,
+    "name": "Hill Street Tai Hwa Pork Noodle",
+    "type": "Stars",
+    "lat": 1.3052,
+    "lng": 103.8624,
+    "specialty": "Bak Chor Mee",
+    "description": "Legendary pork noodles at Crawford Lane. Address: 466 Crawford Ln, #01-12"
+  },
+  {
+    "id": 3,
+    "name": "Tian Tian Hainanese Chicken Rice",
+    "type": "Bib Gourmand",
+    "lat": 1.2825,
+    "lng": 103.8442,
+    "specialty": "Chicken Rice",
+    "description": "Famous chicken rice at Maxwell Food Centre. Address: Maxwell Food Centre, #01-10"
+  },
+  {
+    "id": 4,
+    "name": "328 Katong Laksa",
+    "type": "Bib Gourmand",
+    "lat": 1.3045,
+    "lng": 103.9064,
+    "specialty": "Laksa",
+    "description": "The quintessential Katong Laksa experience."
+  },
+  {
+    "id": 5,
+    "name": "Odette",
+    "type": "Stars",
+    "lat": 1.2892,
+    "lng": 103.8516,
+    "specialty": "Pigeon Fabien Dine",
+    "description": "3-Michelin-starred Modern French cuisine in the National Gallery. Address: 1 St Andrew's Rd, #01-04"
+  },
+  {
+    "id": 6,
+    "name": "Burnt Ends",
+    "type": "Stars",
+    "lat": 1.2806,
+    "lng": 103.8115,
+    "specialty": "Burnt Ends Sanger",
+    "description": "Australian BBQ fine dining. Address: 7 Dempsey Rd, #01-04"
+  },
+  {
+    "id": 7,
+    "name": "A Noodle Story",
+    "type": "Bib Gourmand",
+    "lat": 1.2792,
+    "lng": 103.8471,
+    "specialty": "Singapore Style Ramen",
+    "description": "Singapore Ramen at Amoy Street Food Centre, #01-39"
+  },
+  {
+    "id": 8,
+    "name": "Seroja",
+    "type": "Stars",
+    "lat": 1.2995,
+    "lng": 103.8557,
+    "specialty": "Flavours of the Malay Archipelago",
+    "description": "Malay-Archipelago fine dining. Address: 7 Fraser St, #01-30/33 Duo Galleria"
+  },
+  {
+    "id": 9,
+    "name": "Boon Tong Kee",
+    "type": "Bib Gourmand",
+    "lat": 1.3255,
+    "lng": 103.8478,
+    "specialty": "Signature Boiled Chicken",
+    "description": "Chicken Rice legendary chain. Address: 399 Balestier Rd"
+  }
+]
