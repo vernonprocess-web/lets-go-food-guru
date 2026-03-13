@@ -145,6 +145,97 @@ body, html {
     transform: translateY(0);
 }
 
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Locate Me Button */
+.locate-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--deep-blue);
+    border: none;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.locate-btn:hover {
+    transform: scale(1.1);
+    background: var(--deep-blue);
+    color: var(--white);
+}
+
+.locate-btn:active {
+    transform: scale(0.95);
+}
+
+/* Custom Markers */
+.custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: var(--primary-red);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.marker-pin::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background: white;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.marker-pin.orange {
+    background: #FF8C00;
+}
+
+/* User Location Dot */
+.user-location-dot {
+    width: 15px;
+    height: 15px;
+    background: #007AFF;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(0, 122, 255, 0.2), 0 2px 5px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 122, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); }
+}
+
 /* Mobile Adjustments */
 @media (max-width: 480px) {
     .filter-bar {
@@ -156,5 +247,12 @@ body, html {
     .filter-btn {
         padding: 8px 15px;
         font-size: 0.8rem;
+    }
+
+    .locate-btn {
+        bottom: 20px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
     }
 }

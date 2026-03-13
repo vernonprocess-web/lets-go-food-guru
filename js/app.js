@@ -17,17 +17,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let gurusData = [];
     let markersLayer = L.layerGroup().addTo(map);
+    let userLocationMarker = null;
 
-    // 3. Load Data
-    fetch('data/guru-list.json')
-        .then(response => response.json())
-        .then(data => {
-            gurusData = data;
-            renderMarkers('all');
-        })
-        .catch(err => console.error('Error loading guru data:', err));
+    // 4. Custom Icons
+    const redIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div class="marker-pin"></div>',
+        iconSize: [30, 42],
+        iconAnchor: [15, 42],
+        popupAnchor: [0, -40]
+    });
 
-    // 4. Render Markers Logic
+    const orangeIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div class="marker-pin orange"></div>',
+        iconSize: [30, 42],
+        iconAnchor: [15, 42],
+        popupAnchor: [0, -40]
+    });
+
+    // 5. Render Markers Logic
     function renderMarkers(filterType) {
         markersLayer.clearLayers();
 
@@ -51,7 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         filtered.forEach(guru => {
-            const marker = L.marker([guru.lat, guru.lng]);
+            const gType = guru.type.toLowerCase();
+            const icon = (gType === 'stars' || gType === 'michelin_star') ? redIcon : orangeIcon;
+            
+            const marker = L.marker([guru.lat, guru.lng], { icon: icon });
             
             // Custom Popup Layout
             const popupContent = `
@@ -68,34 +80,91 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Filter Logic
+    // 6. Geolocation Logic
+    const locateBtn = document.getElementById('locate-me');
+    locateBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser');
+            return;
+        }
+
+        locateBtn.innerHTML = `
+            <svg class="animate-spin" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" stroke-dasharray="31.4" stroke-dashoffset="10"></circle>
+            </svg>
+        `;
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                
+                // Update User Marker
+                if (userLocationMarker) {
+                    userLocationMarker.setLatLng([latitude, longitude]);
+                } else {
+                    userLocationMarker = L.marker([latitude, longitude], {
+                        icon: L.divIcon({
+                            className: 'user-location-marker',
+                            html: '<div class="user-location-dot"></div>',
+                            iconSize: [20, 20],
+                            iconAnchor: [10, 10]
+                        })
+                    }).addTo(map);
+                }
+
+                map.flyTo([latitude, longitude], 15);
+                
+                // Reset Button Icon
+                resetLocateIcon();
+            },
+            (err) => {
+                console.error('Geolocation error:', err);
+                alert('Unable to find your location. Please check your permissions.');
+                resetLocateIcon();
+            },
+            { enableHighAccuracy: true }
+        );
+    });
+
+    function resetLocateIcon() {
+        locateBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+            </svg>
+        `;
+    }
+
+    // 7. Load Data
+    fetch('data/guru-list.json')
+        .then(response => response.json())
+        .then(data => {
+            gurusData = data;
+            renderMarkers('all');
+        })
+        .catch(err => console.error('Error loading guru data:', err));
+
+    // 8. Filter Logic
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            // UI Toggle
             filterButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
-            // Data Filter
             const filter = btn.getAttribute('data-filter');
             renderMarkers(filter);
         });
     });
 
-    // 6. Deep Link Logic
+    // 9. Deep Link Logic
     window.openMaps = (lat, lng) => {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const isAndroid = /Android/.test(navigator.userAgent);
 
         let url;
         if (isIOS) {
-            // Apple Maps URL
             url = `maps://maps.apple.com/?q=${lat},${lng}`;
         } else if (isAndroid) {
-            // Google Maps Android Intent
             url = `geo:${lat},${lng}?q=${lat},${lng}`;
         } else {
-            // Browser Default (Google Maps)
             url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
         }
 
