@@ -18,56 +18,73 @@ document.addEventListener('DOMContentLoaded', () => {
     let gurusData = [];
     let markersLayer = L.layerGroup().addTo(map);
     let userLocationMarker = null;
-
-    // 4. Custom Icons
-    const redIcon = L.divIcon({
-        className: 'custom-marker',
-        html: '<div class="marker-pin"></div>',
-        iconSize: [30, 42],
-        iconAnchor: [15, 42],
-        popupAnchor: [0, -40]
-    });
-
-    const orangeIcon = L.divIcon({
-        className: 'custom-marker',
-        html: '<div class="marker-pin orange"></div>',
-        iconSize: [30, 42],
-        iconAnchor: [15, 42],
-        popupAnchor: [0, -40]
-    });
+    let activeFilter = 'all';
+    let searchQuery = '';
 
     // 5. Render Markers Logic
-    function renderMarkers(filterType) {
+    function renderMarkers() {
         markersLayer.clearLayers();
 
-        const fType = filterType.toLowerCase();
+        const fType = activeFilter.toLowerCase();
+        const query = searchQuery.toLowerCase();
+
         const filtered = gurusData.filter(guru => {
-            if (fType === 'all') return true;
-            
-            const gType = guru.type.toLowerCase();
-            
-            // Map 'Stars' button to both 'Stars' and 'michelin_star'
-            if (fType === 'stars') {
-                return gType === 'stars' || gType === 'michelin_star';
-            }
-            
-            // Map 'Bib Gourmand' button to both 'Bib Gourmand' and 'bib_gourmand'
-            if (fType === 'bib gourmand') {
-                return gType === 'bib gourmand' || gType === 'bib_gourmand';
+            // Check Tag Filter
+            let passesFilter = false;
+            if (fType === 'all') {
+                passesFilter = true;
+            } else {
+                const gType = (guru.type || '').toLowerCase();
+                const tags = (guru.tags || []).map(t => t.toLowerCase());
+                
+                if (fType === 'stars') {
+                    passesFilter = gType === 'stars' || gType === 'michelin_star' || tags.includes('michelin plate') || tags.includes('michelin star');
+                } else if (fType === 'bib gourmand') {
+                    passesFilter = gType === 'bib gourmand' || gType === 'bib_gourmand' || tags.includes('bib gourmand');
+                } else {
+                    passesFilter = tags.includes(fType);
+                }
             }
 
-            return gType === fType;
+            if (!passesFilter) return false;
+
+            // Check Search Query
+            if (query) {
+                const searchString = `${guru.name} ${guru.specialty || ''} ${guru.description || ''} ${(guru.tags || []).join(' ')}`.toLowerCase();
+                if (!searchString.includes(query)) return false;
+            }
+
+            return true;
         });
+
+        let latlngs = [];
 
         filtered.forEach(guru => {
             const gType = (guru.type || 'Bib Gourmand').toLowerCase();
-            const icon = (gType === 'stars' || gType === 'michelin_star') ? redIcon : orangeIcon;
+            let iconDiv = (gType === 'stars' || gType === 'michelin_star') ? '<div class="marker-pin"></div>' : '<div class="marker-pin orange"></div>';
+            
+            // Media Badge check
+            const hasMedia = ['video', 'facebook_reel', 'instagram_post'].includes(guru.media_type) || 
+                             (guru.reviews && guru.reviews.some(r => ['video', 'facebook_reel', 'instagram_post'].includes(r.media_type)));
+            
+            if (hasMedia) {
+                iconDiv += '<div class="media-badge">▶</div>';
+            }
+
+            const customIcon = L.divIcon({
+                className: 'custom-marker',
+                html: iconDiv,
+                iconSize: [30, 42],
+                iconAnchor: [15, 42],
+                popupAnchor: [0, -40]
+            });
             
             // Extract specialty and description with fallbacks for Ingestor data
             const specialty = guru.specialty || (guru.reviews && guru.reviews[0] ? guru.reviews[0].specialty_dish : 'Specialty pending');
-            const description = guru.description || (guru.reviews && guru.reviews[0] ? `Recent Post: ${guru.reviews[0].post_date}` : 'Check it out!');
+            const description = guru.description || (guru.reviews && guru.reviews[0] ? `Recent Post: ${guru.reviews[0].post_date || 'New!'}` : 'Check it out!');
             
-            const marker = L.marker([guru.lat, guru.lng], { icon: icon });
+            const marker = L.marker([guru.lat, guru.lng], { icon: customIcon });
+            latlngs.push([guru.lat, guru.lng]);
             
             // Custom Popup Layout
             const popupContent = `
@@ -82,6 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.bindPopup(popupContent);
             markersLayer.addLayer(marker);
         });
+
+        if (latlngs.length > 0) {
+            map.fitBounds(latlngs, { padding: [50, 50], maxZoom: 15 });
+        }
     }
 
     // 6. Geolocation Logic
@@ -143,20 +164,55 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             gurusData = data;
-            renderMarkers('all');
+            buildFilterPills(data);
+            renderMarkers();
         })
         .catch(err => console.error('Error loading guru data:', err));
 
-    // 8. Filter Logic
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.getAttribute('data-filter');
-            renderMarkers(filter);
+    function buildFilterPills(data) {
+        const filterBar = document.getElementById('filter-bar');
+        
+        let tagsSet = new Set();
+        data.forEach(g => {
+            if (g.tags) g.tags.forEach(t => tagsSet.add(t));
         });
-    });
+        
+        // Base pills
+        let html = `
+            <button class="filter-btn active" data-filter="all">Show All</button>
+            <button class="filter-btn" data-filter="Stars">⭐ Stars</button>
+            <button class="filter-btn" data-filter="Bib Gourmand">🍲 Bib Gourmand</button>
+        `;
+        
+        // Add unique tags
+        Array.from(tagsSet).sort().forEach(tag => {
+            if (tag.toLowerCase() !== 'michelin star' && tag.toLowerCase() !== 'bib gourmand' && tag.toLowerCase() !== 'michelin plate') {
+                html += `<button class="filter-btn" data-filter="${tag}">${tag}</button>`;
+            }
+        });
+        
+        filterBar.innerHTML = html;
+        
+        // Attach events
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.getAttribute('data-filter');
+                renderMarkers();
+            });
+        });
+    }
+
+    // 8. Search Logic
+    const searchInput = document.getElementById('guru-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderMarkers();
+        });
+    }
 
     // 9. Deep Link Logic
     window.openMaps = (lat, lng) => {
