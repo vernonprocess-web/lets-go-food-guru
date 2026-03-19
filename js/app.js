@@ -78,10 +78,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 iconAnchor: [15, 42],
                 popupAnchor: [0, -40]
             });
-            
             // Extract specialty and description with fallbacks for Ingestor data
             const specialty = guru.specialty || (guru.reviews && guru.reviews[0] ? guru.reviews[0].specialty_dish : 'Specialty pending');
-            const description = guru.description || (guru.reviews && guru.reviews[0] ? `Recent Post: ${guru.reviews[0].post_date || 'New!'}` : 'Check it out!');
+            const description = guru.description || (guru.reviews && guru.reviews[0] ? `Recent Post: ${guru.reviews[0].post_date || 'New!'}` : '');
+            
+            // Build rich data strings
+            const addressHtml = guru.address ? `<div class="address" style="font-size: 0.85rem; color: #666; margin-bottom: 5px;">📍 ${guru.address}</div>` : '';
+            
+            // Michelin Status Logic
+            let michelinStatusHtml = '';
+            const gTypeLower = (guru.type || '').toLowerCase();
+            const tagsLower = (guru.tags || []).map(t => t.toLowerCase());
+            
+            if (gTypeLower === 'michelin_star' || gTypeLower === 'stars' || tagsLower.includes('michelin star') || tagsLower.includes('michelin plate') || tagsLower.includes('bib gourmand')) {
+                let statusText = "Michelin Recognized";
+                if (tagsLower.includes('michelin plate')) statusText = "Michelin Plate";
+                if (tagsLower.includes('michelin star') || gTypeLower === 'michelin_star' || gTypeLower === 'stars') statusText = "Michelin Starred";
+                if (gTypeLower === 'bib_gourmand' || gTypeLower === 'bib gourmand' || tagsLower.includes('bib gourmand')) statusText = "Bib Gourmand";
+                
+                michelinStatusHtml = `<div class="michelin" style="font-weight: 700; color: var(--primary-red); margin-bottom: 5px; font-size: 0.9rem;">⭐ Michelin Status: ${statusText}</div>`;
+            }
+
+            // Blogger Link Logic
+            let bloggerHtml = '';
+            if (guru.reviews && guru.reviews.length > 0) {
+               const review = guru.reviews[0];
+               let sourceName = review.source;
+               if (!sourceName && review.url) {
+                   if (review.url.includes('facebook')) sourceName = "Facebook Reel";
+                   if (review.url.includes('instagram')) sourceName = "Instagram Post";
+                   // Specific requested override for Poh Cheu
+                   if (guru.name === "Poh Cheu Kitchen") sourceName = "Singapore Foodie";
+               }
+
+               if (sourceName && review.url) {
+                   bloggerHtml = `
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 0.85rem; color: #555;">Featured by: <strong style="color: var(--deep-blue);">${sourceName}</strong></span>
+                        <a href="${review.url}" target="_blank" class="blogger-btn" style="display: block; width: 100%; background: #4267B2; color: white; text-align: center; padding: 8px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; margin-top: 5px; font-weight: 600;">
+                            🎥 View Blogger Post
+                        </a>
+                    </div>
+                   `;
+               }
+            }
             
             const marker = L.marker([guru.lat, guru.lng], { icon: customIcon });
             latlngs.push([guru.lat, guru.lng]);
@@ -91,7 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="guru-popup">
                     <h3>${guru.name}</h3>
                     <div class="dish">Dish: ${specialty}</div>
-                    <p>${description}</p>
+                    ${addressHtml}
+                    ${michelinStatusHtml}
+                    ${description ? `<p style="font-size: 0.9rem; color: var(--dark-gray); margin-bottom: 10px;">${description}</p>` : ''}
+                    ${bloggerHtml}
                     <a href="#" class="guru-btn" onclick="openMaps(${guru.lat}, ${guru.lng}); return false;">Guru, take me there!</a>
                 </div>
             `;
