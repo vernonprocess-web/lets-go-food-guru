@@ -79,5 +79,23 @@
     "lng": 103.8478,
     "specialty": "Signature Boiled Chicken",
     "description": "Chicken Rice legendary chain. Address: 399 Balestier Rd"
+  },
+  {
+    "name": "Synthesis",
+    "address": "3 Temasek Blvd, Tower 4 #01-643, Singapore 038983",
+    "lat": 1.2936,
+    "lng": 103.8592,
+    "country_code": "SG",
+    "reviews": [
+      {
+        "specialty_dish": "TCM-Inspired Ice Cream",
+        "key_flavors": "Traditional herbal flavors",
+        "post_date": "2026-03-19",
+        "url": "https://www.facebook.com/reel/1585268192547020",
+        "thumbnail": "",
+        "is_hot": true
+      }
+    ],
+    "is_hot": true
   }
 ]

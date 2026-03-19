@@ -60,8 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         filtered.forEach(guru => {
-            const gType = guru.type.toLowerCase();
+            const gType = (guru.type || 'Bib Gourmand').toLowerCase();
             const icon = (gType === 'stars' || gType === 'michelin_star') ? redIcon : orangeIcon;
+            
+            // Extract specialty and description with fallbacks for Ingestor data
+            const specialty = guru.specialty || (guru.reviews && guru.reviews[0] ? guru.reviews[0].specialty_dish : 'Specialty pending');
+            const description = guru.description || (guru.reviews && guru.reviews[0] ? `Recent Post: ${guru.reviews[0].post_date}` : 'Check it out!');
             
             const marker = L.marker([guru.lat, guru.lng], { icon: icon });
             
@@ -69,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const popupContent = `
                 <div class="guru-popup">
                     <h3>${guru.name}</h3>
-                    <div class="dish">Dish: ${guru.specialty}</div>
-                    <p>${guru.description}</p>
+                    <div class="dish">Dish: ${specialty}</div>
+                    <p>${description}</p>
                     <a href="#" class="guru-btn" onclick="openMaps(${guru.lat}, ${guru.lng}); return false;">Guru, take me there!</a>
                 </div>
             `;
