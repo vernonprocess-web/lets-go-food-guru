@@ -1,14 +1,5 @@
 [
     {
-        "id": 9,
-        "name": "Boon Tong Kee",
-        "type": "Bib Gourmand",
-        "lat": 1.3255,
-        "lng": 103.8478,
-        "specialty": "Signature Boiled Chicken",
-        "description": "Chicken Rice legendary chain. Address: 399 Balestier Rd"
-    },
-    {
         "name": "Synthesis",
         "address": "3 Temasek Blvd, Tower 4 #01-643, Singapore 038983",
         "lat": 1.2936,
