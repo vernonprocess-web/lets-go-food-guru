@@ -97,5 +97,35 @@
             }
         ],
         "is_hot": true
+    },
+    {
+        "name": "Mr. Bucket Chocolaterie",
+        "address": "13, Dempsey Road, Ridout, Tanglin, Central Region, Singapore, 249674, Singapore",
+        "lat": 1.304662,
+        "lng": 103.8102859,
+        "country": "Singapore",
+        "country_code": "SG",
+        "state": null,
+        "city": null,
+        "tags": [
+            "chocolate",
+            "kaya toast",
+            "workshop",
+            "dempsey",
+            "singapore food"
+        ],
+        "reviews": [
+            {
+                "specialty_dish": "Kaya toast chocolate",
+                "key_flavors": "Kaya (coconut jam) and toast flavored chocolate",
+                "post_date": "2026-02-25",
+                "url": "https://www.facebook.com/reel/761781776790482",
+                "thumbnail": "",
+                "source": "Singapore Foodie",
+                "media_type": "facebook_reel",
+                "is_hot": false
+            }
+        ],
+        "is_hot": false
     }
 ]
