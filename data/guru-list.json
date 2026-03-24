@@ -1,14 +1,5 @@
 [
     {
-        "id": 4,
-        "name": "328 Katong Laksa",
-        "type": "Bib Gourmand",
-        "lat": 1.3045,
-        "lng": 103.9064,
-        "specialty": "Laksa",
-        "description": "The quintessential Katong Laksa experience."
-    },
-    {
         "id": 5,
         "name": "Odette",
         "type": "Stars",
