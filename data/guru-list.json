@@ -1,14 +1,5 @@
 [
     {
-        "id": 2,
-        "name": "Hill Street Tai Hwa Pork Noodle",
-        "type": "Stars",
-        "lat": 1.3052,
-        "lng": 103.8624,
-        "specialty": "Bak Chor Mee",
-        "description": "Legendary pork noodles at Crawford Lane. Address: 466 Crawford Ln, #01-12"
-    },
-    {
         "id": 3,
         "name": "Tian Tian Hainanese Chicken Rice",
         "type": "Bib Gourmand",
