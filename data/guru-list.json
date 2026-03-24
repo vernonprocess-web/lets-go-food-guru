@@ -97,35 +97,5 @@
             }
         ],
         "is_hot": true
-    },
-    {
-        "name": "Poh Cheu Kitchen",
-        "address": "127 BUKIT MERAH LANE 1 SINGAPORE 150127",
-        "lat": 1.28532858968794,
-        "lng": 103.803396774073,
-        "country": "Singapore",
-        "country_code": "SG",
-        "state": null,
-        "city": "Singapore",
-        "tags": [
-            "Ang Ku Kueh",
-            "Michelin Plate",
-            "Traditional Snacks",
-            "Kueh",
-            "Hawker"
-        ],
-        "reviews": [
-            {
-                "specialty_dish": "Ang Ku Kueh",
-                "key_flavors": "More than 10 flavours",
-                "post_date": null,
-                "url": "https://www.facebook.com/reel/1431791171751571",
-                "thumbnail": "",
-                "source": null,
-                "media_type": "instagram_post",
-                "is_hot": false
-            }
-        ],
-        "is_hot": false
     }
 ]
