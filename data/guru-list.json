@@ -1,14 +1,5 @@
 [
     {
-        "id": 8,
-        "name": "Seroja",
-        "type": "Stars",
-        "lat": 1.2995,
-        "lng": 103.8557,
-        "specialty": "Flavours of the Malay Archipelago",
-        "description": "Malay-Archipelago fine dining. Address: 7 Fraser St, #01-30/33 Duo Galleria"
-    },
-    {
         "id": 9,
         "name": "Boon Tong Kee",
         "type": "Bib Gourmand",
