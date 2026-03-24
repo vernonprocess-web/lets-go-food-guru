@@ -1,14 +1,5 @@
 [
     {
-        "id": 6,
-        "name": "Burnt Ends",
-        "type": "Stars",
-        "lat": 1.2806,
-        "lng": 103.8115,
-        "specialty": "Burnt Ends Sanger",
-        "description": "Australian BBQ fine dining. Address: 7 Dempsey Rd, #01-04"
-    },
-    {
         "id": 7,
         "name": "A Noodle Story",
         "type": "Bib Gourmand",
