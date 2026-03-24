@@ -1,14 +1,5 @@
 [
     {
-        "id": 1,
-        "name": "Liao Fan Hawker Chan",
-        "type": "Stars",
-        "lat": 1.2825,
-        "lng": 103.843,
-        "specialty": "Soya Sauce Chicken Rice",
-        "description": "World's cheapest Michelin-starred meal."
-    },
-    {
         "id": 2,
         "name": "Hill Street Tai Hwa Pork Noodle",
         "type": "Stars",
