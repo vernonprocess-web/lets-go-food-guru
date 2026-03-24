@@ -1,14 +1,5 @@
 [
     {
-        "id": 7,
-        "name": "A Noodle Story",
-        "type": "Bib Gourmand",
-        "lat": 1.2792,
-        "lng": 103.8471,
-        "specialty": "Singapore Style Ramen",
-        "description": "Singapore Ramen at Amoy Street Food Centre, #01-39"
-    },
-    {
         "id": 8,
         "name": "Seroja",
         "type": "Stars",
