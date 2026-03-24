@@ -1,14 +1,5 @@
 [
     {
-        "id": 3,
-        "name": "Tian Tian Hainanese Chicken Rice",
-        "type": "Bib Gourmand",
-        "lat": 1.2825,
-        "lng": 103.8442,
-        "specialty": "Chicken Rice",
-        "description": "Famous chicken rice at Maxwell Food Centre. Address: Maxwell Food Centre, #01-10"
-    },
-    {
         "id": 4,
         "name": "328 Katong Laksa",
         "type": "Bib Gourmand",
