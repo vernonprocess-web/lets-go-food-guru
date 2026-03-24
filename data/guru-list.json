@@ -1,14 +1,5 @@
 [
     {
-        "id": 5,
-        "name": "Odette",
-        "type": "Stars",
-        "lat": 1.2892,
-        "lng": 103.8516,
-        "specialty": "Pigeon Fabien Dine",
-        "description": "3-Michelin-starred Modern French cuisine in the National Gallery. Address: 1 St Andrew's Rd, #01-04"
-    },
-    {
         "id": 6,
         "name": "Burnt Ends",
         "type": "Stars",
